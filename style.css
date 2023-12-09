@@ -1,42 +1,5 @@
-*{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-
-body{
-    text-align: center;
-    margin: 0;
-    color: white;
-    /*min-height: 100vh;*/
+*{
+    background-color: black;
+    color :aliceblue
 }
 
-div{
-    margin: 5px;
-    background: rgb(100, 100, 200);
-    padding: 10px;
-}
-
-#menu{
-    margin: 5px;
-    background-color: rgb(200, 100, 100);
-}
-
-li{
-    padding: 10px;
-    display: inline-block;
-}
-
-a{
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-}
-
-p{
-    margin: 5px;
-    font-size: 20px;
-}
-
-h1:not(#nom),
-h2:not(#cv),
-h3{
-    margin: 5px;
-    background-color: rgb(200, 100, 100);
-}
