@@ -7,20 +7,23 @@
     <style>
         body {
             background-color: #1a1a1a;
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: monospace;
         }
+
         .terminal {
             width: 600px;
             background-color: #000;
             border-radius: 6px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
             overflow: hidden;
+            cursor: pointer;
         }
+
         .terminal-header {
             background: linear-gradient(to bottom, #e4e4e4, #c3c3c3);
             height: 25px;
@@ -29,18 +32,22 @@
             padding: 0 8px;
             position: relative;
         }
+
         .buttons {
             display: flex;
             gap: 6px;
         }
+
         .button {
             width: 12px;
             height: 12px;
             border-radius: 50%;
         }
+
         .close { background-color: #ff5f56; }
         .minimize { background-color: #ffbd2e; }
         .maximize { background-color: #27c93f; }
+
         .terminal-title {
             position: absolute;
             width: 100%;
@@ -49,17 +56,21 @@
             color: #4d4d4d;
             font-size: 12px;
         }
+
         .terminal-body {
             padding: 20px;
             color: #00ff00;
             min-height: 300px;
         }
+
         .prompt {
             margin-bottom: 10px;
         }
+
         #command-line {
             display: inline;
         }
+
         .cursor {
             display: inline-block;
             width: 8px;
@@ -68,29 +79,55 @@
             margin-left: 2px;
             animation: blink 1s infinite;
         }
+
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #666;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-family: monospace;
+        }
+
+        .hint span {
+            color: #999;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .hint.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-    <div class="terminal">
+    <div class="terminal" id="terminal">
         <div class="terminal-header">
             <div class="buttons">
                 <div class="button close"></div>
                 <div class="button minimize"></div>
                 <div class="button maximize"></div>
             </div>
-            <div class="terminal-title">gaia — -zsh</div>
+            <div class="terminal-title">initialization — -zsh</div>
         </div>
         <div class="terminal-body">
-            <div class="prompt" id="last-login"></div>
+            <div class="prompt">Last login: <span id="last-login"></span></div>
             <div class="prompt">
                 <span id="user-prompt"></span> ~ % <span id="command-line"></span><span class="cursor"></span>
             </div>
         </div>
     </div>
+    <div class="hint" id="hint"><span>↵ Entrée</span> ou <span>Clic terminal</span></div>
+
     <script>
         // Fonction pour détecter le navigateur
         function getBrowser() {
@@ -117,27 +154,23 @@
         // Mettre à jour le prompt avec le nom du navigateur
         document.getElementById('user-prompt').textContent = `user@${getBrowser()}`;
 
-        // Fonction pour formater la date comme dans un terminal macOS
-        function formatDate(date) {
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            
-            const day = days[date.getDay()];
-            const month = months[date.getMonth()];
-            const dateNum = date.getDate();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            
-            return `Last login: ${day} ${month} ${dateNum} ${hours}:${minutes}:${seconds} on console`;
-        }
-
-        // Mettre à jour la date de dernière connexion
+        // Formater la date
         const now = new Date();
-        document.getElementById('last-login').textContent = formatDate(now);
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const day = days[now.getDay()];
+        const month = months[now.getMonth()];
+        const date = now.getDate();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('last-login').textContent = 
+            `${day} ${month} ${date} ${hours}:${minutes}:${seconds} on console`;
 
         const text = 'cd gaia.raw';
         let index = 0;
+        const terminal = document.getElementById('terminal');
+        const hint = document.getElementById('hint');
         
         function type() {
             if (index < text.length) {
@@ -145,12 +178,23 @@
                 index++;
                 setTimeout(type, 100);
             } else {
+                // Afficher l'indice après la fin de l'animation
+                setTimeout(() => {
+                    hint.classList.add('show');
+                }, 500);
+                
+                // Ajouter les événements de clic et touche
+                terminal.addEventListener('click', goToLanding);
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
-                        window.location.href = 'landing.html';
+                        goToLanding();
                     }
                 });
             }
+        }
+
+        function goToLanding() {
+            window.location.href = 'landing.html';
         }
         
         window.onload = type;
