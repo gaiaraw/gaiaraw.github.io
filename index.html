@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: monospace;
+        }
+        .terminal {
+            width: 600px;
+            background-color: #000;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        .terminal-header {
+            background: linear-gradient(to bottom, #e4e4e4, #c3c3c3);
+            height: 25px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            position: relative;
+        }
+        .buttons {
+            display: flex;
+            gap: 6px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+        .terminal-title {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            left: 0;
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+        .terminal-body {
+            padding: 20px;
+            color: #00ff00;
+            min-height: 300px;
+        }
+        .prompt {
+            margin-bottom: 10px;
+        }
+        #command-line {
+            display: inline;
+        }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #00ff00;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="buttons">
+                <div class="button close"></div>
+                <div class="button minimize"></div>
+                <div class="button maximize"></div>
+            </div>
+            <div class="terminal-title">gaia — -zsh</div>
+        </div>
+        <div class="terminal-body">
+            <div class="prompt" id="last-login"></div>
+            <div class="prompt">
+                <span id="user-prompt"></span> ~ % <span id="command-line"></span><span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Fonction pour détecter le navigateur
+        function getBrowser() {
+            const userAgent = navigator.userAgent;
+            let browserName;
+            
+            if (userAgent.match(/chrome|chromium|crios/i)) {
+                browserName = "chrome";
+            } else if (userAgent.match(/firefox|fxios/i)) {
+                browserName = "firefox";
+            } else if (userAgent.match(/safari/i)) {
+                browserName = "safari";
+            } else if (userAgent.match(/opr\//i)) {
+                browserName = "opera";
+            } else if (userAgent.match(/edg/i)) {
+                browserName = "edge";
+            } else {
+                browserName = "unknown";
+            }
+            
+            return browserName;
+        }
+
+        // Mettre à jour le prompt avec le nom du navigateur
+        document.getElementById('user-prompt').textContent = `user@${getBrowser()}`;
+
+        // Fonction pour formater la date comme dans un terminal macOS
+        function formatDate(date) {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const day = days[date.getDay()];
+            const month = months[date.getMonth()];
+            const dateNum = date.getDate();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            
+            return `Last login: ${day} ${month} ${dateNum} ${hours}:${minutes}:${seconds} on console`;
+        }
+
+        // Mettre à jour la date de dernière connexion
+        const now = new Date();
+        document.getElementById('last-login').textContent = formatDate(now);
+
+        const text = 'cd gaia.raw';
+        let index = 0;
+        
+        function type() {
+            if (index < text.length) {
+                document.getElementById('command-line').innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 100);
+            } else {
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        window.location.href = 'landing.html';
+                    }
+                });
+            }
+        }
+        
+        window.onload = type;
+    </script>
+</body>
+</html>

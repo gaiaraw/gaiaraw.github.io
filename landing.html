@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Terminal Container */
+        #terminal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        /* Terminal Window */
+        .terminal {
+            width: 600px;
+            background-color: #000;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: linear-gradient(to bottom, #e4e4e4, #c3c3c3);
+            height: 25px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            position: relative;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .terminal-title {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            left: 0;
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            color: #00ff00;
+            min-height: 300px;
+            font-family: monospace;
+        }
+
+        /* Desktop Styles */
+        #desktop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Menu Bar */
+        .menu-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 13px;
+            z-index: 1000;
+        }
+
+        .left-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-bar img.apple-logo {
+            width: 18px;
+            height: 18px;
+            margin-right: 20px;
+            opacity: 0.8;
+            display: block;
+        }
+
+        .menu-bar img.apple-logo:hover {
+            opacity: 1;
+        }
+
+        .menu-bar .datetime {
+            margin-right: 10px;
+        }
+
+        /* Desktop Icons Grid */
+        .desktop-icons {
+            margin-top: 40px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+        }
+
+        .folder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .folder:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .folder img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+        }
+
+        .folder-name {
+            text-align: center;
+            font-size: 13px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        #desktop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        #terminal-container.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Terminal Container -->
+    <div id="terminal-container">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="buttons">
+                    <div class="button close"></div>
+                    <div class="button minimize"></div>
+                    <div class="button maximize"></div>
+                </div>
+                <div class="terminal-title">initialization — -zsh</div>
+            </div>
+            <div class="terminal-body" id="terminal-content"></div>
+        </div>
+    </div>
+
+    <!-- Desktop Container -->
+    <div id="desktop">
+        <div class="menu-bar">
+            <div class="left-menu">
+                <img src="assets/icons8-mac-os-50.png" alt="Apple Logo" class="apple-logo" style="filter: invert(1);">
+            </div>
+            <div class="datetime" id="datetime"></div>
+        </div>
+        <div class="desktop-icons">
+            <a href="https://gaiaraw.github.io/RetroOS/" class="folder" target="_blank">
+                <img src="assets/icons8-mac-folder-48.png" alt="Folder">
+                <span class="folder-name">RetroOS</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const terminalContent = document.getElementById('terminal-content');
+        const terminalContainer = document.getElementById('terminal-container');
+        const desktop = document.getElementById('desktop');
+        const datetimeElement = document.getElementById('datetime');
+        
+        // Fonction pour mettre à jour la date et l'heure
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            datetimeElement.textContent = now.toLocaleDateString('fr-FR', options);
+        }
+
+        // Mettre à jour l'heure toutes les minutes
+        setInterval(updateDateTime, 60000);
+        updateDateTime(); // Première mise à jour
+
+        const codeLines = [
+            'Initializing system...',
+            'Loading interface...',
+            'Starting services...',
+            'System ready.'
+        ];
+
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeCode() {
+            if (lineIndex < codeLines.length) {
+                if (charIndex === 0) {
+                    terminalContent.innerHTML += '> ';
+                }
+                
+                if (charIndex < codeLines[lineIndex].length) {
+                    terminalContent.innerHTML += codeLines[lineIndex][charIndex];
+                    charIndex++;
+                    setTimeout(typeCode, 20);
+                } else {
+                    terminalContent.innerHTML += '<br>';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeCode, 200);
+                }
+            } else {
+                setTimeout(() => {
+                    terminalContainer.classList.add('hide');
+                    setTimeout(() => {
+                        desktop.classList.add('show');
+                    }, 300);
+                }, 500);
+            }
+        }
+
+        window.onload = typeCode;
+    </script>
+</body>
+</html>
