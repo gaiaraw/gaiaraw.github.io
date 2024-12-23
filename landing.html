@@ -13,6 +13,7 @@
             font-family: monospace;
             min-height: 100vh;
             position: relative;
+            font-size: 16px; /* Taille de base augmentée */
         }
 
         #terminal-container {
@@ -174,21 +175,17 @@
         }
 
         .card-title {
-            font-size: 1.1em;
-            color: #fff;
-            margin-bottom: 10px;
+            font-size: 1.3em;
+            margin-bottom: 12px;
         }
 
         .card-subtitle {
-            font-size: 0.9em;
-            color: #888;
-            margin-bottom: 15px;
+            font-size: 1.1em;
         }
 
         .card-content {
-            color: #aaa;
-            font-size: 0.9em;
-            line-height: 1.5;
+            font-size: 1.1em;
+            line-height: 1.6;
         }
 
         .tags {
@@ -201,9 +198,28 @@
         .tag {
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 0.95em;
+        }
+
+        /* Responsive design amélioré */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+            .section {
+                margin: 40px 15px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -314,6 +330,33 @@
                         <span class="tag">macOS</span>
                         <span class="tag">Git</span>
                         <span class="tag">LaTeX</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="languages">
+            <h2 class="section-title">Langues</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="tags">
+                        <span class="tag">Français (Maternelle)</span>
+                        <span class="tag">Anglais (Intermédiaire)</span>
+                        <span class="tag">Arabe Dialecte (Darija Algérien)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="interests">
+            <h2 class="section-title">Centres d'Intérêt</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="tags">
+                        <span class="tag">Internet</span>
+                        <span class="tag">Sport</span>
+                        <span class="tag">Arts Visuels</span>
+                        <span class="tag">Voyage</span>
                     </div>
                 </div>
             </div>
