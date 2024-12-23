@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gaiaraw</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         body {
             margin: 0;
@@ -260,6 +262,55 @@
                 padding: 15px;
             }
         }
+
+        /* Style pour le titre et sous-titre */
+        .title-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .main-title {
+            color: white;
+            font-size: 2.5em;
+            font-weight: normal;
+            margin: 0 0 15px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.4em;
+            font-weight: normal;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title-container {
+                margin: 30px 0;
+            }
+
+            .main-title {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -268,6 +319,11 @@
     </div>
 
     <div id="desktop">
+        <div class="title-container">
+            <h1 class="main-title">Gaïa Berkache</h1>
+            <h2 class="subtitle">Développement Web & Data Scientist</h2>
+        </div>
+        
         <div class="section" id="education">
             <h2 class="section-title">Formation</h2>
             <div class="grid">
@@ -421,15 +477,15 @@
         const desktop = document.getElementById('desktop');
 
         const codeLines = [
-            'Initializing system...',
-            'Loading interface...',
-            'Starting services...',
-            'System ready.'
+            "Initialisation du système...",
+            "Chargement des compétences en bioinformatique...",
+            "Connexion aux APIs de données...",
+            "Système prêt."
         ];
-
+        
         let lineIndex = 0;
         let charIndex = 0;
-
+        
         function typeCode() {
             if (lineIndex < codeLines.length) {
                 if (charIndex === 0) {
@@ -439,20 +495,21 @@
                 if (charIndex < codeLines[lineIndex].length) {
                     terminalContent.innerHTML += codeLines[lineIndex][charIndex];
                     charIndex++;
-                    setTimeout(typeCode, 20);
+                    setTimeout(typeCode, 5); // Vitesse de frappe
                 } else {
                     terminalContent.innerHTML += '<br>';
-                    lineIndex++;
                     charIndex = 0;
-                    setTimeout(typeCode, 200);
+                    lineIndex++;
+                    setTimeout(typeCode, 10); // Délai entre les lignes
                 }
             } else {
                 setTimeout(() => {
-                    terminalContainer.classList.add('hide');
+                    document.getElementById('terminal-container').style.opacity = '0';
                     setTimeout(() => {
-                        desktop.classList.add('show');
+                        document.getElementById('terminal-container').style.display = 'none';
+                        document.getElementById('desktop').classList.add('show');
                     }, 300);
-                }, 500);
+                }, 400);
             }
         }
         
