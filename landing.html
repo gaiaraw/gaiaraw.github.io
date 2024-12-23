@@ -38,6 +38,9 @@
             opacity: 0;
             transition: opacity 0.5s ease;
             padding: 20px;
+            padding-bottom: 100px; /* Espace pour les réseaux sociaux */
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         #desktop.show {
@@ -107,6 +110,101 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Styles pour les sections */
+        .section {
+            margin: 80px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card.clickable {
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card.clickable:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .card-subtitle {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .card-content {
+            color: #aaa;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
     </style>
 </head>
 <body>
@@ -115,13 +213,110 @@
     </div>
 
     <div id="desktop">
-        <div class="projects">
-            <a href="https://gaiaraw.github.io/RetroOS/" class="folder" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" style="fill:#FFFFFF;">
-                    <path d="M 5 4 C 3.346 4 2 5.346 2 7 L 2 13 L 3 13 L 47 13 L 48 13 L 48 11 C 48 9.346 46.654 8 45 8 L 18.044922 8.0058594 C 17.765922 7.9048594 17.188906 6.9861875 16.878906 6.4921875 C 16.111906 5.2681875 15.317 4 14 4 L 5 4 z M 3 15 C 2.448 15 2 15.448 2 16 L 2 43 C 2 44.657 3.343 46 5 46 L 45 46 C 46.657 46 48 44.657 48 43 L 48 16 C 48 15.448 47.552 15 47 15 L 3 15 z"></path>
-                </svg>
-                <span class="folder-name">RetroOS</span>
-            </a>
+        <div class="section" id="education">
+            <h2 class="section-title">Formation</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">Master Bioinformatique</h3>
+                    <div class="card-subtitle">Université de Bordeaux • 2022-2024</div>
+                    <div class="card-content">
+                        Parcours Biologie Computationnelle
+                        <br>Mention Assez bien
+                        <br>UE commune au master informatique: programmation orientée objet en java (POO)
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Licence Biologie Santé</h3>
+                    <div class="card-subtitle">Université Paris XII • 2018-2022</div>
+                    <div class="card-content">
+                        Biologie, biochimie, chimie
+                        <br>Erasmus Zagreb (Croatie), semestre d'été 2022
+                        <br>Mention Assez bien
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="university-projects">
+            <h2 class="section-title">Projets Universitaires</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">Développement Web Fullstack</h3>
+                    <div class="card-subtitle">Stage de fin d'études • Master 2</div>
+                    <div class="card-content">
+                        Application web pour l'analyse EEG en contexte clinique. Backend en Flask avec authentification et SQLAlchemy, frontend en Javascript et Bootstrap. Visualisation interactive avec Bokeh et documentation avec Sphinx.
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">SQLAlchemy</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Bootstrap</span>
+                        <span class="tag">Bokeh</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Analyse de données Oxford Nanopore</h3>
+                    <div class="card-subtitle">Projet R&D • Master 1</div>
+                    <div class="card-content">
+                        Développement d'un pipeline d'analyse pour données Oxford Nanopore de cellules humaines infectées par le VIH. Focus sur la simplicité d'utilisation pour les biologistes non-informaticiens.
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Nextflow</span>
+                        <span class="tag">IGV</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="personal-projects">
+            <h2 class="section-title">Projets Personnels</h2>
+            <div class="grid">
+                <a href="https://gaiaraw.github.io/RetroOS/" target="_blank" class="card clickable">
+                    <h3 class="card-title">RetroOS</h3>
+                    <div class="card-content">
+                        Interface rétro inspirée des systèmes d'exploitation des années 2000, intégrant un lecteur musical SoundCloud. 
+                        Propose 3 thèmes uniques (Classic, Aqua, Matrix) et une interface interactive avec fenêtres déplaçables et effets visuels personnalisés.
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Vue.js</span>
+                        <span class="tag">SoundCloud API</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section" id="skills">
+            <h2 class="section-title">Compétences</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">Langages de programmation</h3>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Java</span>
+                        <span class="tag">SQL</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Frameworks & Technologies</h3>
+                    <div class="tags">
+                        <span class="tag">Flask</span>
+                        <span class="tag">Django</span>
+                        <span class="tag">Vue.js</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Outils & Systèmes</h3>
+                    <div class="tags">
+                        <span class="tag">Linux</span>
+                        <span class="tag">macOS</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">LaTeX</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="social-container">
@@ -180,6 +375,25 @@
         }
         
         window.onload = typeCode;
+
+        // Animation des sections au scroll
+        function checkScroll() {
+            document.querySelectorAll('.section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const isVisible = (rect.top <= window.innerHeight * 0.8);
+                
+                if (isVisible) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // Écouter l'événement de scroll
+        window.addEventListener('scroll', checkScroll);
+        // Vérifier une première fois au chargement
+        window.addEventListener('load', () => {
+            setTimeout(checkScroll, 1000); // Délai pour laisser l'animation initiale se terminer
+        });
     </script>
 </body>
 </html>
