@@ -167,11 +167,50 @@
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+            padding-right: 40px;
         }
 
-        .card.clickable:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
+        .card.clickable::after {
+            content: "→";
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            opacity: 0.7;
+            transition: transform 0.3s ease;
+        }
+
+        .card.clickable:hover::after {
+            transform: translate(5px, -50%);
+            opacity: 1;
+        }
+
+        .card.clickable .card-title {
+            color: #4a9eff;
+            transition: color 0.3s ease;
+        }
+
+        .card.clickable:hover .card-title {
+            color: #66b1ff;
+        }
+
+        .card.clickable::before {
+            content: "Voir le projet";
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.9em;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            color: #4a9eff;
+        }
+
+        .card.clickable:hover::before {
+            opacity: 0.8;
+            transform: translateX(0);
         }
 
         .card-title {
